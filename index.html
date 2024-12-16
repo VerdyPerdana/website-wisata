@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&family=Quicksand:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="asset/styles/styles.css" />
+  <title>WisataDompu</title>
+  <style>
+    /* Tambahan untuk animasi scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Animasi scroll yang lebih menarik */
+    .scroll-animation {
+      transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .scroll-animation.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Gaya untuk gambar dengan efek bayangan */
+    .image-gallery img {
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .image-gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+      /* Bayangan bersinar cerah */
+    }
+
+    /* Gaya untuk latar belakang yang cerah */
+    body {
+      background-color: #f0f8ff;
+      /* Warna latar belakang cerah */
+      color: #333;
+      /* Warna teks */
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* Gaya untuk header dan footer */
+    header,
+    footer {
+      background-color: #007bff;
+      /* Warna biru cerah */
+      color: white;
+      padding: 10px 0;
+    }
+
+    /* Gaya untuk tombol load more */
+    .load-more-button {
+      background-color: #28a745;
+      /* Warna hijau cerah */
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .load-more-button:hover {
+      background-color: #218838;
+      /* Warna hijau lebih gelap saat hover */
+    }
+
+    /* Gaya untuk blog card */
+    .card {
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Gaya untuk grid destinasi */
+    .destination-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      /* Empat kolom responsif */
+      gap: 20px;
+      /* Jarak antar gambar */
+      margin: 20px auto;
+      /* Pusatkan grid */
+      max-width: 1200px;
+      /* Maksimal lebar grid */
+    }
+
+    .image-gallery {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+
+    .image-gallery:hover {
+      transform: scale(1.05);
+    }
+
+    .image-gallery img {
+      width: 100%;
+      height: 200px;
+      /* Menetapkan tinggi tetap untuk semua gambar */
+      object-fit: cover;
+      /* Memastikan gambar tidak terdistorsi dan mengisi area */
+    }
+
+    .desc {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-radius: 0 0 10px 10px;
+    }
+
+    /* Gaya untuk about section */
+    .aboutUs {
+      background-color: #ffffff;
+      /* Latar belakang putih */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .flex-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .flex-item {
+      flex: 1;
+      margin: 0 10px;
+      background-color: #f9f9f9;
+      /* Latar belakang abu-abu muda */
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .flex-item h1 {
+      color: #007bff;
+      /* Warna biru cerah untuk judul */
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    .flex-item p {
+      margin: 0;
+      font-size: 0.95em;
+      line-height: 1.5;
+    }
+
+    .flex-item ol {
+      padding-left: 20px;
+      /* Memberikan jarak antara nomor dan garis */
+    }
+
+    .join {
+      text-align: center;
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #e9ecef;
+      /* Latar belakang abu-abu terang */
+      border-radius: 10px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">WisataDompu</div>
+      <ul class="nav-links">
+        <input type="checkbox" id="checkbox_toggle" />
+        <label for="checkbox_toggle" class="hamburger">&#9776;</label>
+        <div class="menu">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#destination">Destination</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#about">About</a></li>
+          <li>
+            <a href="login.html"><i class="fas fa-sign-in-alt"></i></a>
+          </li>
+        </div>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- html untuk home -->
+    <section id="home">
+      <article class="title-home scroll-animation">
+        <h2>Proudly Indonesian</h2>
+        <h3>Menyajikan Keindahan Alam Dompu</h3>
+      </article>
+    </section>
+
+    <!-- html untuk destination -->
+    <section id="destination">
+      <article class="title-destination scroll-animation">
+        <h2>Destination</h2>
+        <h4>Rekomendasi Tempat Wisata Dompu !!!</h4>
+      </article>
+
+      <div class="destination-grid">
+        <div class="image-destination scroll-animation">
+          <div class="image-gallery">
+            <a target="_blank" href="asset/image/tamborafix.jpg">
+              <img src="asset/image/tamborafix.jpg" alt="Gapura Bali" width="600" height="400" />
+            </a>
+            <div class="desc">Gunung Tambora</div>
+          </div>
+        </div>
+
+        <div class="image-destination scroll-animation">
+          <div class="image-gallery">
+            <a target="_blank" href="asset/image/satonda.jpg">
+              <img src="asset/image/satonda.jpg" alt="Tugu Jogja" width="1000" height="700" />
+            </a>
+            <div class="desc">Pulau Satonda</div>
+          </div>
+        </div>
+
+        <div class="image-destination scroll-animation">
+          <div class="image-gallery">
+            <a target="_blank" href="asset/image/savanadoroncanga.jpg">
+              <img src="asset/image/savanadoroncanga.jpg" alt="Raja Ampat" width="600" height="400" />
+            </a>
+            <div class="desc">Savana Doro Ncanga</div>
+          </div>
+        </div>
+
+        <div class="image-destination scroll-animation">
+          <div class="image-gallery">
+            <a target="_blank" href="asset/image/dorowadunae.jpg">
+              <img src="asset/image/dorowadunae.jpg" alt="Gunung" width="600" height="400" />
+            </a>
+            <div class="desc">Doro Wadu Nae</div>
+          </div>
+        </div>
+
+        <div class="image-destination scroll-animation">
+          <div class="image-gallery">
+            <a target="_blank" href="asset/image/lakey.jpeg">
+              <img src="asset/image/lakey.jpeg" alt="Air Terjun" width="600" height="400" />
+            </a>
+            <div class="desc">Pantai Lakey</div>
+          </div>
+        </div>
+
+        <div class="image-destination scroll-animation">
+          <div class="image-gallery">
+            <a target="_blank" href="asset/image/nisapudu.jpg">
+              <img src="asset/image/nisapudu.jpg" alt="Danau" width="600" height="400" />
+            </a>
+            <div class="desc">Nisa Pudu</div>
+          </div>
+        </div>
+
+        <div class="image-destination scroll-animation">
+          <div class="image-gallery">
+            <a target="_blank" href="asset/image/matompo.jpg">
+              <img src="asset/image/matompo.jpg" alt="Borobudur" width="600" height="400" />
+            </a>
+            <div class="desc">Bukit Matompo</div>
+          </div>
+        </div>
+
+        <div class="image-destination scroll-animation">
+          <div class="image-gallery">
+            <a target="_blank" href="asset/image/airterjunrora.jpg">
+              <img src="asset/image/airterjunrora.jpg" alt="Mountains" width="600" height="400" />
+            </a>
+            <div class="desc">Air Terjun Rora</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- html untuk blog -->
+    <section id="blog">
+      <article class="contentBlog">
+        <div class="title-content-blog scroll-animation">
+          <h2>Blog</h2>
+        </div>
+        <div class="card-container">
+          <div onclick="showBlog('gunungBromo', 'Gunung Tambora', 'Verdy Perdana')" class="card scroll-animation">
+            <div class="card-image">
+              <img src="asset/image/tamborafix.jpg" alt="Gunung Tambora" />
+            </div>
+            <div class="card-content">
+              <h5 class="card-title">Gunung Tambora</h5>
+              <p class="card-text">
+                Gunung Tambora adalah salah satu destinasi wisata alam terkenal
+                di Indonesia...
+              </p>
+              <p class="card-text-person">Verdy Perdana</p>
+              <p class="card-text">
+                <small class="text-body-secondary">Kamis, 19 Agustus 2024</small>
+              </p>
+            </div>
+          </div>
+
+          <div onclick="showBlog('gunungMerbabu', 'Gunung Merbabu', 'Verdy Perdana')" class="card scroll-animation">
+            <div class="card-image">
+              <img src="asset/image/savanadoroncanga.jpg" alt="Savana Doroncanga" />
+            </div>
+            <div class="card-content">
+              <h5 class="card-title">Savana Doroncanga</h5>
+              <p class="card-text">
+                Doro Ncanga adalah Savana yang indah dan unik sera menawan...
+              </p>
+              <p class="card-text-person">Verdy Perdana</p>
+              <p class="card-text">
+                <small class="text-body-secondary">Jumat, 23 Oktober 2024</small>
+              </p>
+            </div>
+          </div>
+
+          <div onclick="showBlog('danauToba', 'Danau Toba', 'Uzumaki Naruto')" class="card scroll-animation">
+            <div class="card-image">
+              <img src="asset/image/matompo.jpg" alt="BukitDoroMatompo" />
+            </div>
+            <div class="card-content">
+              <h5 class="card-title">Bukit Matompo</h5>
+              <p class="card-text">
+                pulau ini memiliki banyak sekali daerah yang menyimpan keindahan luar biasa....
+              </p>
+              <p class="card-text-person">Verdy Perdana</p>
+              <p class="card-text">
+                <small class="text-body-secondary">Minggu, 22 Oktober 2024</small>
+              </p>
+            </div>
+          </div>
+
+          <div onclick="showBlog('pulauBali', 'Pulau Bali', 'Namikaze Minato')" class="card scroll-animation">
+            <div class="card-image">
+              <img src="asset/image/satonda.jpg" alt="Satonda" />
+            </div>
+            <div class="card-content">
+              <h5 class="card-title">Pulau Satonda</h5>
+              <p class="card-text">
+                Pulau Satonda merupakan tempat pengasingan putri cantik Dae Minga dari Kerajaan Sangar....
+              </p>
+              <p class="card-text-person">Verdy Perdana</p>
+              <p class="card-text">
+                <small class="text-body-secondary">Minggu, 27 Oktober 2024</small>
+              </p>
+            </div>
+          </div>
+
+          <div onclick="showBlog('parangtritis','Parangtritis', 'Maito Guy')" class="card scroll-animation">
+            <div class="card-image">
+              <img src="asset/image/lakey.jpeg" alt="lakey" />
+            </div>
+            <div class="card-content">
+              <h5 class="card-title">Pantai Lakey</h5>
+              <p class="card-text">
+                surfing memang menjadi obyek pemandangan tambahan yang menghiasi indahnya pantai...
+              </p>
+              <p class="card-text-person">Verdy Perdana</p>
+              <p class="card-text">
+                <small class="text-body-secondary">Selasa, 29 Oktober 2024</small>
+              </p>
+            </div>
+          </div>
+
+          <div onclick="showBlog('komodoIsland', 'Komodo Island', 'Hatake Kakashi')" class="card scroll-animation">
+            <div class="card-image">
+              <img src="asset/image/dorowadunae.jpg" alt="DWN" />
+            </div>
+            <div class="card-content">
+              <h5 class="card-title">Doro Wadu Nae</h5>
+              <p class="card-text">
+                Wadu Na'e (batu besar) yang ada di puncak bukit itulah yang menjadi tujuan utama bagi para
+                pengunjung....
+              </p>
+              <p class="card-text-person">Verdy Perdana</p>
+              <p class="card-text">
+                <small class="text-body-secondary">Kamis, 26 Oktober 2024</small>
+              </p>
+            </div>
+          </div>
+          <div onclick="showBlog('rajaAmpat','Raja Ampat', 'Gojo Satoru')" class="card scroll-animation">
+            <div class="card-image">
+              <img src="asset/image/airterjunrora.jpg" alt="rora" />
+            </div>
+            <div class="card-content">
+              <h5 class="card-title">Air Terjun Rora</h5>
+              <p class="card-text">
+                "Air Terjun Rora, Penampakan Surga Kecil di Perbatasan Bima dan Dompu...
+              </p>
+              <p class="card-text-person">Verdy Perdana</p>
+              <p class="card-text">
+                <small class="text-body-secondary">Kamis, 21 Oktober 2024</small>
+              </p>
+            </div>
+          </div>
+          <div onclick="showBlog('bandaNeira', 'Banda Neira', 'Megumin')" class="card scroll-animation">
+            <div class="card-image">
+              <img src="asset/image/nisapudu.jpg" alt="Nisa Pudu" />
+            </div>
+            <div class="card-content">
+              <h5 class="card-title">Nisa Pudu</h5>
+              <p class="card-text">
+                Nisa Pudu adalah pulau kecil yang sepaket dengan gunung kecil, membuatnya indah dan menarik...
+              </p>
+              <p class="card-text-person">Verdy Perdana</p>
+              <p class="card-text">
+                <small class="text-body-secondary">Rabu, 25 Oktober 2024</small>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- tombol load more -->
+        <div class="load-more">
+          <button class="load-more-button">Blog Lainnya</button>
+        </div>
+
+        <aside class="additional-info">
+          <div class="image-left">
+            <img src="asset/image/trapel.jpeg" alt="Orang Berwisata" />
+          </div>
+          <div class="content">
+            <h2>Ingin Berwisata?</h2>
+            <p>
+              Temukan tips perjalanan terbaru dan berita terkini tentang
+              destinasi wisata Dompu yang indah di sini.
+            </p>
+            <a href="#">Baca Lebih Lanjut</a>
+            <a href="https://wa.me/">Chat di WhatsApp</a> <!-- Ganti dengan link WhatsApp -->
+          </div>
+          <div class="image-right">
+            <img src="asset/image/trapel.jpeg" alt="Orang Berwisata" />
+          </div>
+        </aside>
+      </article>
+    </section>
+
+    <!-- html untuk about -->
+    <section id="about">
+      <article class="aboutUs scroll-animation">
+        <h1>Tentang Kami</h1>
+        <p>
+          Selamat datang di WisataDompu, komunitas online yang didedikasikan
+          untuk pecinta alam dan penjelajah Indonesia! Kami adalah tempat di
+          mana para pelancong dan pecinta alam berkumpul untuk berbagi
+          pengalaman, inspirasi, dan informasi tentang destinasi wisata
+          Indonesia yang menakjubkan.
+        </p>
+      </article>
+
+      <div class="flex-container">
+        <article class="flex-item">
+          <h1>Misi Kami</h1>
+          <ol>
+            <li>Menghubungkan Para Pecinta Alam Indonesia</li>
+            <p>
+              Kami bertujuan untuk menjadi wadah tempat para pelancong dan
+              pecinta alam Indonesia dapat saling terhubung, berbagi
+              pengalaman, dan menemukan komunitas yang mendukung.
+            </p>
+            <li>Inspirasi dan Informasi</li>
+            <p>
+              Kami berkomitmen untuk memberikan inspirasi kepada para
+              pelancong dan pecinta alam melalui cerita perjalanan dan
+              informasi yang berguna.
+            </p>
+            <li>Menyuarakan Keindahan Setiap Sudut Indonesia</li>
+            <p>
+              Setiap sudut Indonesia memiliki cerita dan keindahannya sendiri.
+              Kami ingin menyuarakan keunikan dan keindahan setiap destinasi,
+              dari pegunungan yang megah hingga pantai yang memesona.
+            </p>
+          </ol>
+        </article>
+
+        <article class="flex-item">
+          <h1>Kami menawarkan</h1>
+          <ol>
+            <li>Informasi Terpercaya</li>
+            <p>
+              Kami menyajikan informasi terpercaya tentang destinasi wisata,
+              termasuk tips perjalanan, kegiatan menarik, dan tempat-tempat
+              unik yang mungkin belum Anda ketahui.
+            </p>
+            <li>Komunitas yang Ramah</li>
+            <p>
+              Komunitas penuh semangat, di mana Anda dapat bertukar cerita,
+              foto, dan saran dengan sesama pelancong.
+            </p>
+            <li>Berkolaborasi</li>
+            <p>
+              Bersama-sama, kita dapat membuat situs ini menjadi sumber daya
+              terbaik untuk penjelajah Indonesia.
+            </p>
+          </ol>
+        </article>
+      </div>
+
+      <article class="join">
+        <h1>Bergabunglah Dengan Kami!</h1>
+        <p>
+          Jangan ragu untuk bergabung dengan komunitas kami dan mulai
+          menjelajahi keindahan alam Nusantara bersama-sama. Terima kasih
+          telah memilih Wisata Alam Indonesia sebagai sumber inspirasi
+          perjalanan Anda!
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <div class="social-icons">
+      <a href="" class="social-icon"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+    </div>
+
+    <div class="copy-right">
+      <p>&copy; 2024 WisataDompu. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Menambahkan event listener untuk animasi scroll
+    const scrollElements = document.querySelectorAll('.scroll-animation');
+
+    const elementInView = (el) => {
+      const rect = el.getBoundingClientRect();
+      return (
+        rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.bottom >= 0
+      );
+    };
+
+    const displayScrollElement = (el) => {
+      el.classList.add('visible');
+    };
+
+    const handleScrollAnimation = () => {
+      scrollElements.forEach((el) => {
+        if (elementInView(el)) {
+          displayScrollElement(el);
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScrollAnimation);
+    window.addEventListener('load', handleScrollAnimation);
+  </script>
+</body>
+
+</html>
